@@ -1,0 +1,13 @@
+.card{
+    background-color: #00f;
+    height: 100px;
+    width: 100px;
+    margin: 5px;
+}
+.row{
+    display: flex;
+}
+#board {
+    margin: 20px auto;
+    display: inline-block;
+}
