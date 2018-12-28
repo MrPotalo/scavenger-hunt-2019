@@ -1,5 +1,4 @@
 import React from 'react';
-import _ from 'lodash';
 
 import egg1 from './images/egg1.png';
 import egg from './images/egg.png';
