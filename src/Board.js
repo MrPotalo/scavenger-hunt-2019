@@ -2,9 +2,31 @@ import React, { Component } from 'react';
 import './Board.css';
 import _ from 'lodash';
 import Card from './Card.js';
-import { SSL_OP_NO_SESSION_RESUMPTION_ON_RENEGOTIATION } from 'constants';
+
+import egg1 from './images/egg1.png'
+import egg from './images/egg.png'
+import apple from './images/apple.jpg'
+import banana from './images/bananas.jpg'
+import milk from './images/milk.png'
+import carrot from './images/carrot.jpg'
+import snel from './images/Snel.png'
+import cat from './images/cat.jpg'
+import doggo from './images/doggo.jpg'
+import tato from './images/tato.png'
+import taco from './images/taco.jpg'
+import burgus from './images/burgus.png'
+import hors from './images/hors.jpg'
+import creb from './images/creb.jpg'
+
+const images = [egg1,apple, banana, milk, carrot, snel, cat, doggo, tato, taco, burgus, hors, creb]
 
 class Board extends Component {
+    componentDidMount(){
+        images.forEach((img) => {
+            let i = new Image();
+            i.src = img.fileName;
+        })
+    }
     constructor(props){
         super(props);
         let nums = _.concat(_.range(1, 13), _.range(1,13));
