@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import logo from './images/LOGO.png';
 import Board from './Board.js';
 import Maze from './Maze.js';
 import _ from 'lodash';
@@ -28,6 +29,8 @@ class App extends Component {
     render() {
         let html = (
             <div id="codeBox">
+                <img id="logo" src={logo} />
+                <br />
                 <span>Input secret code: </span>
                 <input onKeyDown={this.tryCode} type="password" />
             </div>

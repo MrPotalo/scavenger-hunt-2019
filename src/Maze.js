@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './Maze.css';
+import ImagePreload from './ImagePreload.js';
 import _ from 'lodash';
 import playerImg from './images/egg1.png';
+import egg from './images/egg.png';
 import tato from './images/tato.png';
 
-const SIZE = 20;
+const SIZE = 12;
 
 class Maze extends Component {
     constructor(props) {
@@ -68,6 +70,7 @@ class Maze extends Component {
         this.state = {
             grid,
             player: [0, 0],
+            won: false,
         };
     }
 
@@ -79,29 +82,30 @@ class Maze extends Component {
     }
 
     keyPressed = event => {
+        console.log(event.keyCode);
         let playerPos = this.state.player;
-        if (event.keyCode === 37) {
+        if (event.keyCode === 37 || event.keyCode === 65) {
             if (
                 playerPos[1] > 0 &&
                 this.state.grid[playerPos[0]][playerPos[1]][3] === 0
             ) {
                 playerPos[1]--;
             }
-        } else if (event.keyCode === 38) {
+        } else if (event.keyCode === 38 || event.keyCode === 87) {
             if (
                 playerPos[0] > 0 &&
                 this.state.grid[playerPos[0]][playerPos[1]][0] === 0
             ) {
                 playerPos[0]--;
             }
-        } else if (event.keyCode === 39) {
+        } else if (event.keyCode === 39 || event.keyCode === 68) {
             if (
                 playerPos[1] < SIZE - 1 &&
                 this.state.grid[playerPos[0]][playerPos[1]][1] === 0
             ) {
                 playerPos[1]++;
             }
-        } else if (event.keyCode === 40) {
+        } else if (event.keyCode === 40 || event.keyCode === 83) {
             if (
                 playerPos[0] < SIZE - 1 &&
                 this.state.grid[playerPos[0]][playerPos[1]][2] === 0
@@ -109,60 +113,84 @@ class Maze extends Component {
                 playerPos[0]++;
             }
         }
-        this.state.grid[playerPos[0]][playerPos[1]][5] = false;
-        this.setState({ player: playerPos });
+        let won = false;
+        if (this.state.grid[playerPos[0]][playerPos[1]][5]) {
+            this.setState(lastState => {
+                let newGrid = lastState.grid;
+                newGrid[playerPos[0]][playerPos[1]][5] = false;
+                return { grid: newGrid };
+            });
+            let dropsLeft = this.state.grid.reduce((acc, row) => {
+                return (
+                    acc +
+                    row.reduce((acc2, col) => {
+                        return acc2 + (col[5] ? 1 : 0);
+                    }, 0)
+                );
+            }, 0);
+            console.log(dropsLeft);
+            if (dropsLeft === 0) {
+                won = true;
+            }
+        }
+        this.setState({ player: playerPos, won });
     };
 
     render() {
         return (
             <div id="maze">
-                {this.state.grid.map((row, r) => {
-                    return (
-                        <div
-                            key={r}
-                            className="row"
-                            style={{ height: 100 / SIZE + '%' }}
-                        >
-                            {row.map((cell, c) => {
-                                let walls = 'cell';
-                                if (cell[0] > 0) {
-                                    walls += ' top';
-                                }
-                                if (cell[1] > 0) {
-                                    walls += ' right';
-                                }
-                                if (cell[2] > 0) {
-                                    walls += ' bottom';
-                                }
-                                if (cell[3] > 0) {
-                                    walls += ' left';
-                                }
-                                let innards;
-                                if (
-                                    r === this.state.player[0] &&
-                                    c === this.state.player[1]
-                                ) {
-                                    innards = (
-                                        <img id="player" src={playerImg} />
+                {this.state.won ? (
+                    <img src={egg} />
+                ) : (
+                    this.state.grid.map((row, r) => {
+                        return (
+                            <div
+                                key={r}
+                                className="row"
+                                style={{ height: 100 / SIZE + '%' }}
+                            >
+                                {row.map((cell, c) => {
+                                    let walls = 'cell';
+                                    if (cell[0] > 0) {
+                                        walls += ' top';
+                                    }
+                                    if (cell[1] > 0) {
+                                        walls += ' right';
+                                    }
+                                    if (cell[2] > 0) {
+                                        walls += ' bottom';
+                                    }
+                                    if (cell[3] > 0) {
+                                        walls += ' left';
+                                    }
+                                    let innards;
+                                    if (
+                                        r === this.state.player[0] &&
+                                        c === this.state.player[1]
+                                    ) {
+                                        innards = (
+                                            <img id="player" src={playerImg} />
+                                        );
+                                    } else if (this.state.grid[r][c][5]) {
+                                        innards = (
+                                            <img className="drop" src={tato} />
+                                        );
+                                    }
+                                    return (
+                                        <div
+                                            className={walls}
+                                            style={{ width: 100 / SIZE + '%' }}
+                                            key={c}
+                                        >
+                                            {innards}
+                                        </div>
                                     );
-                                } else if (this.state.grid[r][c][5]) {
-                                    innards = (
-                                        <img className="drop" src={tato} />
-                                    );
-                                }
-                                return (
-                                    <div
-                                        className={walls}
-                                        style={{ width: 100 / SIZE + '%' }}
-                                        key={c}
-                                    >
-                                        {innards}
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    );
-                })}
+                                })}
+                            </div>
+                        );
+                    })
+                )}
+                <ImagePreload />
             </div>
         );
     }

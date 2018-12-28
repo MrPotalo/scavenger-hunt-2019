@@ -22,7 +22,18 @@
     color: #61dafb;
 }
 #codeBox {
+    width: 500px;
+    display: inline-block;
     padding-top: 10vh;
+}
+#codeBox span {
+    padding-right: 5px;
+}
+#logo {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding-bottom: 20px;
 }
 
 @keyframes App-logo-spin {
