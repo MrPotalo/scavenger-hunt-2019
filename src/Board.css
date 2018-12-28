@@ -1,7 +1,7 @@
-*{
-   box-sizing: border-box
+* {
+    box-sizing: border-box;
 }
-.card{
+.card {
     background-color: #00f;
     padding: 5px;
     height: 100%;
@@ -17,7 +17,7 @@
     width: 20%;
     padding: 5px;
 }
-.row{
+.row {
     display: flex;
 }
 #board {
@@ -30,8 +30,8 @@ img {
     height: 100%;
     width: 100%;
     background-color: white;
-    float:left;
+    float: left;
 }
-img.clue{
+img.clue {
     transform: scale(6);
 }
