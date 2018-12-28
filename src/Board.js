@@ -3,6 +3,7 @@ import './Board.css';
 import _ from 'lodash';
 import Card from './Card.js';
 
+import egg from './images/egg.png';
 import egg1 from './images/egg1.png';
 import apple from './images/apple.jpg';
 import banana from './images/bananas.jpg';
@@ -95,19 +96,26 @@ class Board extends Component {
 
     render() {
         return (
-            <div id="board">
-                {this.state.grid.map((item, i) => {
+            <div>
+                <div id="board">
+                    {this.state.grid.map((item, i) => {
+                        return (
+                            <div key={i} className="cardContainer">
+                                <Card
+                                    done={this.state.done}
+                                    handleClick={this.handleClick}
+                                    key={i}
+                                    isFlipped={item.state !== 'ready'}
+                                    id={i}
+                                    cardValue={item.value}
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+                {images.concat(egg).map((img, i) => {
                     return (
-                        <div key={i} className="cardContainer">
-                            <Card
-                                done={this.state.done}
-                                handleClick={this.handleClick}
-                                key={i}
-                                isFlipped={item.state !== 'ready'}
-                                id={i}
-                                cardValue={item.value}
-                            />
-                        </div>
+                        <img key={i} src={img} style={{ display: 'none' }} />
                     );
                 })}
             </div>
