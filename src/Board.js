@@ -3,6 +3,9 @@ import './Board.css';
 import _ from 'lodash';
 import Card from './Card.js';
 import ImagePreload from './ImagePreload.js';
+import fart from './audio/Fart.mp3';
+import woo from './audio/Woo.mp3';
+import click from './audio/Click.mp3';
 
 class Board extends Component {
     constructor(props) {
@@ -31,6 +34,7 @@ class Board extends Component {
 
     handleClick = event => {
         if (!this.state.canClick) return;
+        document.getElementById('clickAudio').play();
         event.preventDefault();
         const cardId = event.target.id;
         let grid = this.state.grid.slice();
@@ -41,6 +45,7 @@ class Board extends Component {
             selected = cardId;
         } else if (selected !== cardId) {
             if (grid[cardId].value === grid[selected].value) {
+                document.getElementById('wooAudio').play();
                 grid[cardId].state = 'done';
                 grid[selected].state = 'done';
                 this.setState({ grid, canClick: true, selected: null });
@@ -49,6 +54,7 @@ class Board extends Component {
                 }
             } else {
                 this.setState({ canClick: false });
+                document.getElementById('fartAudio').play();
                 setTimeout(() => {
                     grid[cardId].state = 'ready';
                     grid[this.state.selected].state = 'ready';
@@ -78,6 +84,9 @@ class Board extends Component {
                     })}
                 </div>
                 <ImagePreload />
+                <audio id="fartAudio" src={fart} />
+                <audio id="wooAudio" src={woo} />
+                <audio id="clickAudio" src={click} />
             </div>
         );
     }

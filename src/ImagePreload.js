@@ -14,6 +14,7 @@ import taco from './images/taco.jpg';
 import burgus from './images/burgus.png';
 import hors from './images/hors.jpg';
 import creb from './images/creb.jpg';
+import clue2 from './images/clue2.png';
 
 const images = [
     egg1,
@@ -29,6 +30,7 @@ const images = [
     burgus,
     hors,
     creb,
+    clue2,
 ];
 
 class ImagePreload extends Component {
@@ -37,7 +39,12 @@ class ImagePreload extends Component {
             <div>
                 {images.concat(egg).map((img, i) => {
                     return (
-                        <img key={i} src={img} style={{ display: 'none' }} />
+                        <img
+                            key={i}
+                            src={img}
+                            alt="preloaded"
+                            style={{ display: 'none' }}
+                        />
                     );
                 })}
             </div>

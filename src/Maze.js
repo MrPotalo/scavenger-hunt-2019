@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import './Maze.css';
 import ImagePreload from './ImagePreload.js';
-import _ from 'lodash';
-import playerImg from './images/egg1.png';
-import egg from './images/egg.png';
+import playerImg from './images/unicorn.png';
+import clue2 from './images/clue2.png';
 import tato from './images/tato.png';
+import slurp from './audio/Slurp1.mp3';
+import slurp2 from './audio/Slurp2.mp3';
 
-const SIZE = 12;
+const SIZE = 6;
 
 class Maze extends Component {
     constructor(props) {
@@ -80,7 +81,6 @@ class Maze extends Component {
     componentWillUnmount() {
         document.removeEventListener('keydown', this.keyPressed, false);
     }
-
     keyPressed = event => {
         console.log(event.keyCode);
         let playerPos = this.state.player;
@@ -129,9 +129,12 @@ class Maze extends Component {
                 );
             }, 0);
             console.log(dropsLeft);
+            let audioElement = document.getElementById('slurpAudio');
             if (dropsLeft === 0) {
+                audioElement.src = slurp2;
                 won = true;
             }
+            audioElement.play();
         }
         this.setState({ player: playerPos, won });
     };
@@ -140,7 +143,7 @@ class Maze extends Component {
         return (
             <div id="maze">
                 {this.state.won ? (
-                    <img src={egg} />
+                    <img id="clue" src={clue2} alt="clue" />
                 ) : (
                     this.state.grid.map((row, r) => {
                         return (
@@ -169,11 +172,19 @@ class Maze extends Component {
                                         c === this.state.player[1]
                                     ) {
                                         innards = (
-                                            <img id="player" src={playerImg} />
+                                            <img
+                                                id="player"
+                                                src={playerImg}
+                                                alt="player"
+                                            />
                                         );
                                     } else if (this.state.grid[r][c][5]) {
                                         innards = (
-                                            <img className="drop" src={tato} />
+                                            <img
+                                                className="drop"
+                                                src={tato}
+                                                alt="src"
+                                            />
                                         );
                                     }
                                     return (
@@ -191,6 +202,7 @@ class Maze extends Component {
                     })
                 )}
                 <ImagePreload />
+                <audio id="slurpAudio" src={slurp} />
             </div>
         );
     }
