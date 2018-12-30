@@ -7,7 +7,7 @@ import tato from './images/tato.png';
 import slurp from './audio/Slurp1.mp3';
 import slurp2 from './audio/Slurp2.mp3';
 
-const SIZE = process.env.MAZE_SIZE || 10;
+const SIZE = process.env.MAZE_SIZE || 6;
 
 class Maze extends Component {
     constructor(props) {
