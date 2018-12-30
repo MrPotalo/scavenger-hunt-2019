@@ -7,29 +7,27 @@ import tato from './images/tato.png';
 import slurp from './audio/Slurp1.mp3';
 import slurp2 from './audio/Slurp2.mp3';
 
-const SIZE = process.env.MAZE_SIZE || 6;
-
 class Maze extends Component {
     constructor(props) {
         super(props);
 
         let grid = [];
-        for (let i = 0; i < SIZE; i++) {
+        for (let i = 0; i < this.props.Size; i++) {
             let row = [];
-            for (let x = 0; x < SIZE; x++) {
+            for (let x = 0; x < this.props.Size; x++) {
                 // top, right, bottom, left, visited, potato
                 row.push([1, 1, 1, 1, false, false]);
             }
             grid.push(row);
         }
         let startCell = [
-            Math.floor(Math.random() * SIZE),
-            Math.floor(Math.random() * SIZE),
+            Math.floor(Math.random() * this.props.Size),
+            Math.floor(Math.random() * this.props.Size),
         ];
         let visited = 1;
         let path = [startCell];
         grid[startCell[0]][startCell[1]][4] = true;
-        while (visited < SIZE * SIZE) {
+        while (visited < this.props.Size * this.props.Size) {
             let potential = [
                 [startCell[0] - 1, startCell[1], 0, 2],
                 [startCell[0], startCell[1] + 1, 1, 3],
@@ -40,9 +38,9 @@ class Maze extends Component {
             for (let i = 0; i < 4; i++) {
                 if (
                     potential[i][0] > -1 &&
-                    potential[i][0] < SIZE &&
+                    potential[i][0] < this.props.Size &&
                     potential[i][1] > -1 &&
-                    potential[i][1] < SIZE &&
+                    potential[i][1] < this.props.Size &&
                     !grid[potential[i][0]][potential[i][1]][4]
                 ) {
                     neighbors.push(potential[i]);
@@ -61,10 +59,10 @@ class Maze extends Component {
                 startCell = path.pop();
             }
         }
-        for (let i = 0; i < SIZE; i++) {
+        for (let i = 0; i < this.props.Size; i++) {
             let pos = [
-                Math.floor(Math.random() * SIZE),
-                Math.floor(Math.random() * SIZE),
+                Math.floor(Math.random() * this.props.Size),
+                Math.floor(Math.random() * this.props.Size),
             ];
             grid[pos[0]][pos[1]][5] = true;
         }
@@ -100,14 +98,14 @@ class Maze extends Component {
             }
         } else if (event.keyCode === 39 || event.keyCode === 68) {
             if (
-                playerPos[1] < SIZE - 1 &&
+                playerPos[1] < this.props.Size - 1 &&
                 this.state.grid[playerPos[0]][playerPos[1]][1] === 0
             ) {
                 playerPos[1]++;
             }
         } else if (event.keyCode === 40 || event.keyCode === 83) {
             if (
-                playerPos[0] < SIZE - 1 &&
+                playerPos[0] < this.props.Size - 1 &&
                 this.state.grid[playerPos[0]][playerPos[1]][2] === 0
             ) {
                 playerPos[0]++;
@@ -150,7 +148,7 @@ class Maze extends Component {
                             <div
                                 key={r}
                                 className="row"
-                                style={{ height: 100 / SIZE + '%' }}
+                                style={{ height: 100 / this.props.Size + '%' }}
                             >
                                 {row.map((cell, c) => {
                                     let walls = 'cell';
@@ -190,7 +188,10 @@ class Maze extends Component {
                                     return (
                                         <div
                                             className={walls}
-                                            style={{ width: 100 / SIZE + '%' }}
+                                            style={{
+                                                width:
+                                                    100 / this.props.Size + '%',
+                                            }}
                                             key={c}
                                         >
                                             {innards}

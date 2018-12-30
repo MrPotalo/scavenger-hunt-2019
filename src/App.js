@@ -5,7 +5,6 @@ import Board from './Board.js';
 import Maze from './Maze.js';
 import _ from 'lodash';
 
-console.log(React.version);
 class App extends Component {
     constructor(props) {
         super(props);
@@ -34,7 +33,7 @@ class App extends Component {
                 html = <Board />;
                 break;
             case 2:
-                html = <Maze />;
+                html = <Maze Size={process.env.MAZE_SIZE || 10} />;
                 break;
             default:
                 html = (
