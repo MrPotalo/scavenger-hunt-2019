@@ -2,9 +2,12 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    width: calc(100vh - 40px);
-    height: calc(100vh - 40px);
-    margin: 20px auto;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    animation: 2s mazeInit cubic-bezier(0.19, 1.14, 0.74, 1.46);
 }
 .row {
     width: 100%;
@@ -42,4 +45,17 @@ img#clue {
 .drop {
     background-color: initial;
     transform: scale(0.5);
+}
+@keyframes mazeInit {
+    0% {
+        left: -75vw;
+        transform: scale(0.1) rotate(-360deg);
+    }
+    50% {
+        left: 0;
+        transform: scale(0.1) rotate(-360deg);
+    }
+    100% {
+        transform: scale(1) rotate(0deg);
+    }
 }

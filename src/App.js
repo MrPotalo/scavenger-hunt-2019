@@ -3,6 +3,7 @@ import './App.css';
 import logo from './images/LOGO.png';
 import Board from './Board.js';
 import Maze from './Maze.js';
+import Game from './Game.js';
 import _ from 'lodash';
 
 class App extends Component {
@@ -30,10 +31,18 @@ class App extends Component {
         let html;
         switch (this.state.game) {
             case 1:
-                html = <Board />;
+                html = (
+                    <Game>
+                        <Board />
+                    </Game>
+                );
                 break;
             case 2:
-                html = <Maze Size={process.env.MAZE_SIZE || 10} />;
+                html = (
+                    <Game>
+                        <Maze Size={process.env.MAZE_SIZE || 10} />
+                    </Game>
+                );
                 break;
             default:
                 html = (

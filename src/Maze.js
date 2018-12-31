@@ -59,12 +59,15 @@ class Maze extends Component {
                 startCell = path.pop();
             }
         }
+        // initialize potatos
         for (let i = 0; i < this.props.Size; i++) {
             let pos = [
                 Math.floor(Math.random() * this.props.Size),
                 Math.floor(Math.random() * this.props.Size),
             ];
-            grid[pos[0]][pos[1]][5] = true;
+            if (pos[0] != 0 && pos[1] != 0) {
+                grid[pos[0]][pos[1]][5] = true;
+            }
         }
         this.state = {
             grid,

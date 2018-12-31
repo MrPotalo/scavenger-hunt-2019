@@ -29,11 +29,12 @@ class Board extends Component {
             selected: null,
             canClick: true,
             done: false,
+            misses: 0,
         };
     }
 
     handleClick = event => {
-        if (!this.state.canClick) return;
+        if (!this.state.canClick || event.target.className !== 'front') return;
         document.getElementById('clickAudio').play();
         event.preventDefault();
         const cardId = event.target.id;
@@ -53,7 +54,9 @@ class Board extends Component {
                     this.setState({ canClick: false, done: true });
                 }
             } else {
-                this.setState({ canClick: false });
+                this.setState(state => {
+                    return { canClick: false, misses: state.misses + 1 };
+                });
                 document.getElementById('fartAudio').play();
                 setTimeout(() => {
                     grid[cardId].state = 'ready';
@@ -66,8 +69,8 @@ class Board extends Component {
 
     render() {
         return (
-            <div>
-                <div id="board">
+            <div id="board">
+                <div style={{ height: '100%', width: '100%' }}>
                     {this.state.grid.map((item, i) => {
                         return (
                             <div key={i} className="cardContainer">
@@ -82,6 +85,9 @@ class Board extends Component {
                             </div>
                         );
                     })}
+                </div>
+                <div style={{ whiteSpace: 'nowrap' }} id="stats">
+                    {'Misses: ' + this.state.misses}
                 </div>
                 <ImagePreload />
                 <audio id="fartAudio" src={fart} />

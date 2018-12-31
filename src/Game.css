@@ -1,0 +1,6 @@
+#game {
+    width: calc(100vh - 40px);
+    height: calc(100vh - 40px);
+    margin: 20px auto;
+    position: relative;
+}

@@ -33,15 +33,15 @@ const images = [
 
 const Card = ({ id, done, isFlipped, handleClick, cardValue }) =>
     !(id === 12 && done) ? (
-        !isFlipped ? (
-            <div
-                id={id}
-                onClick={handleClick}
-                className={'card' + (isFlipped ? ' flipped' : '')}
-            />
-        ) : (
-            <img src={images[cardValue]} alt={images[cardValue].fileName} />
-        )
+        <div
+            style={done ? { display: 'none' } : {}}
+            className={'card' + (isFlipped ? ' flipped' : '')}
+        >
+            <div id={id} className="front" onClick={handleClick} />
+            <div className="back">
+                <img src={images[cardValue]} alt={images[cardValue].fileName} />
+            </div>
+        </div>
     ) : (
         <img className="clue" src={egg} alt="EGGCLUE" />
     );
