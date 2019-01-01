@@ -1,0 +1,52 @@
+#gameList {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    width: 50vw;
+}
+#gameList .gameIcon {
+    width: 20%;
+    padding: 15px;
+    border-radius: 10%;
+    height: 100%;
+}
+#gameList .gameIcon img {
+    border: 1px solid #777;
+    border-radius: 10%;
+    background-color: #0d0;
+}
+#gameList .gameIcon.animate {
+    animation: 1.1s startGame cubic-bezier(0.33, -0.61, 0.43, 0.64);
+}
+#backButton {
+    position: absolute;
+    left: 50px;
+    top: 50px;
+    background-color: #ff0000;
+    padding: 4px 6px;
+    padding-top: 2px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    color: #fff;
+    width: 100px;
+}
+#backButton:after {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -45px;
+    width: 0;
+    height: 0;
+    border: 31px solid transparent;
+    border-top-color: #ff0000;
+    border-bottom: 0;
+    transform: rotate(90deg);
+}
+@keyframes startGame {
+    0% {
+        transform: scale(1) rotate(0deg);
+    }
+    100% {
+        transform: scale(0) rotate(-720deg);
+    }
+}

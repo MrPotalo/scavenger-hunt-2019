@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import './Game.css';
 
 class Game extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
-        return <div id="game">{this.props.children}</div>;
+        return (
+            <div id="gameContainer">
+                <div id="backButton" onClick={this.props.backHandler}>
+                    {'Back'}
+                </div>
+                <div id="game">{this.props.children}</div>
+            </div>
+        );
     }
 }
 
