@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import logo from './images/LOGO.png';
 import Board from './Board.js';
 import Maze from './Maze.js';
 import Game from './Game.js';
+import GameList from './GameList.js';
 import _ from 'lodash';
+import tato from './images/tato.png';
+import unicorn from './images/unicorn.png';
 
 class App extends Component {
     constructor(props) {
@@ -46,12 +48,14 @@ class App extends Component {
                 break;
             default:
                 html = (
-                    <div id="codeBox">
-                        <img id="logo" src={logo} alt="logo" />
-                        <br />
-                        <span>Input secret code: </span>
-                        <input onKeyDown={this.tryCode} type="password" />
-                    </div>
+                    <GameList>
+                        <Game Name="Match" Icon={tato}>
+                            <Board />
+                        </Game>
+                        <Game Name="Maze" Icon={unicorn}>
+                            <Maze Size={process.env.MAZE_SIZE || 10} />
+                        </Game>
+                    </GameList>
                 );
                 break;
         }

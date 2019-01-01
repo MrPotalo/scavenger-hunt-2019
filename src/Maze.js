@@ -65,7 +65,7 @@ class Maze extends Component {
                 Math.floor(Math.random() * this.props.Size),
                 Math.floor(Math.random() * this.props.Size),
             ];
-            if (pos[0] != 0 && pos[1] != 0) {
+            if (pos[0] !== 0 && pos[1] !== 0) {
                 grid[pos[0]][pos[1]][5] = true;
             }
         }
