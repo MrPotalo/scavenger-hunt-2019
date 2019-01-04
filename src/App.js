@@ -58,7 +58,7 @@ class App extends Component {
                         <Game Name="Maze" Icon={unicorn}>
                             <Maze Size={process.env.MAZE_SIZE || 10} />
                         </Game>
-                        <Game Name="Physics" Icon={tato}>
+                        <Game Name="Block Drop" Icon={tato}>
                             <JumpingGame />
                         </Game>
                     </GameList>

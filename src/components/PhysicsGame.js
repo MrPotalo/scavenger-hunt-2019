@@ -27,34 +27,37 @@ class PhysicsGame extends Component {
             objects,
         };
     }
-    inputData = {
-        keys: [],
-        justPushed: keyCode => {
-            if (this.inputData.keys[keyCode]) {
-                return this.inputData.keys[keyCode].justPushed;
-            }
-            return false;
+    data = {
+        input: {
+            keys: [],
+            justPushed: keyCode => {
+                if (this.data.input.keys[keyCode]) {
+                    return this.data.input.keys[keyCode].justPushed;
+                }
+                return false;
+            },
+            isHeld: keyCode => {
+                if (this.data.input.keys[keyCode]) {
+                    return this.data.input.keys[keyCode].isHeld;
+                }
+                return false;
+            },
         },
-        isHeld: keyCode => {
-            if (this.inputData.keys[keyCode]) {
-                return this.inputData.keys[keyCode].isHeld;
-            }
-            return false;
-        },
+        collisions: [],
     };
     keyDown = event => {
         event.preventDefault();
         let justPushed = true;
         if (
-            this.inputData.keys[event.keyCode] &&
-            this.inputData.keys[event.keyCode].isHeld
+            this.data.input.keys[event.keyCode] &&
+            this.data.input.keys[event.keyCode].isHeld
         ) {
             justPushed = false;
         }
-        this.inputData.keys[event.keyCode] = { isHeld: true, justPushed };
+        this.data.input.keys[event.keyCode] = { isHeld: true, justPushed };
     };
     keyUp = event => {
-        this.inputData.keys[event.keyCode] = {
+        this.data.input.keys[event.keyCode] = {
             isHeld: false,
             justPushed: false,
         };
@@ -111,12 +114,13 @@ class PhysicsGame extends Component {
 
     update = () => {
         if (this.props.GameUpdate) {
-            this.props.GameUpdate(this.inputData, this.state.objects);
+            this.props.GameUpdate(this.data, this.state.objects);
         }
-        this.inputData.keys.map(key => {
+        this.data.input.keys.map(key => {
             key.justPushed = false;
             return key;
         });
+        this.data.collisions = [];
         this.setState(oldState => {
             return {
                 objects: oldState.objects.map((obj, i) => {
@@ -164,8 +168,18 @@ class PhysicsGame extends Component {
                     ) {
                         if (obj.position.x < 0) {
                             obj.position.x = 0;
+                            this.data.collisions.push({
+                                obj,
+                                other: '_left',
+                                side: { left: true },
+                            });
                         } else {
                             obj.position.x = this.state.width - obj.width;
+                            this.data.collisions.push({
+                                obj,
+                                other: '_right',
+                                side: { right: true },
+                            });
                         }
 
                         if (obj.class === 'inelastic') {
@@ -184,7 +198,7 @@ class PhysicsGame extends Component {
                     }
 
                     // handle all collisions
-                    if (!obj.noCollide) {
+                    if (!obj.noCollide || obj.class === 'static') {
                         _.map(this.state.objects, other => {
                             if (other === obj) {
                                 return;
@@ -226,6 +240,11 @@ class PhysicsGame extends Component {
                                 } else if (side === bottomDiff) {
                                     collideInfo.bottom = true;
                                 }
+                                this.data.collisions.push({
+                                    obj,
+                                    other,
+                                    side: collideInfo,
+                                });
 
                                 if (collideInfo.left) {
                                     // collision to left
@@ -286,6 +305,18 @@ class PhysicsGame extends Component {
     };
 
     render() {
+        let offset = this.props.Offset
+            ? Object.assign({}, this.props.Offset)
+            : { x: 0, y: 0 };
+        if (this.props.CameraClamp) {
+            const clampTo = _.find(this.state.objects, {
+                id: this.props.CameraClamp,
+            });
+            if (clampTo) {
+                offset.y += this.props.Height / 2 - clampTo.position.y;
+                console.log(offset.y);
+            }
+        }
         return (
             <div
                 id="physicsGame"
@@ -300,10 +331,11 @@ class PhysicsGame extends Component {
                             key={i}
                             className="physicsBox"
                             style={{
-                                left: obj.position.x + 'px',
-                                top: obj.position.y + 'px',
+                                left: offset.x + obj.position.x + 'px',
+                                top: offset.y + obj.position.y + 'px',
                                 width: obj.width + 'px',
                                 height: obj.height + 'px',
+                                backgroundColor: obj.color || '#000',
                             }}
                         >
                             {obj.img ? (
