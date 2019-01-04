@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import './App.css';
+import _ from 'lodash';
+
 import Board from './Board.js';
 import Maze from './Maze.js';
 import Game from './Game.js';
 import GameList from './GameList.js';
-import _ from 'lodash';
+import JumpingGame from './components/JumpingGame.js';
+
+import './App.css';
 import tato from './images/tato.png';
 import unicorn from './images/unicorn.png';
 
@@ -54,6 +57,9 @@ class App extends Component {
                         </Game>
                         <Game Name="Maze" Icon={unicorn}>
                             <Maze Size={process.env.MAZE_SIZE || 10} />
+                        </Game>
+                        <Game Name="Physics" Icon={tato}>
+                            <JumpingGame />
                         </Game>
                     </GameList>
                 );
